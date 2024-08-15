@@ -116,6 +116,14 @@
 
 (add-hook! 'vterm-mode-hook #'centaur-tabs-local-mode)
 
+;; magit config
+
+(after! magit
+  (setq magit-diff-refine-hunk 'all))
+
+(after! magit
+  (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
+
 ;; lsp config
 
 (after! eglot
