@@ -32,7 +32,7 @@
        ;;deft              ; notational velocity for Emacs
        doom                ; what makes DOOM look the way it does
        doom-dashboard      ; a nifty splash screen for Emacs
-       doom-quit           ; DOOM quit-message prompts when you quit Emacs
+       ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        ;;(emoji +unicode)  ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        indent-guides       ; highlighted indent columns
@@ -56,7 +56,8 @@
        ;;(evil +everywhere); come to the dark side, we have cookies
        file-templates      ; auto-snippets for empty files
        fold                ; (nigh) universal code folding
-       (format +onsave)    ; automated prettiness
+       (format +onsave)
+       ;;(format +lsp +onsave)
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors    ; editing in many places at once
@@ -80,7 +81,7 @@
        vterm               ; the best terminal emulation in Emacs
 
        :checkers
-       syntax              ; tasing you for every semicolon you forget
+       (syntax +icons)     ; tasing you for every semicolon you forget
        ;;(spell +flyspell) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
@@ -95,7 +96,8 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       (lsp +eglot)        ; M-x vscode
+       (lsp +eglot)        ; eglot
+       ;;(lsp)             ; lsp-mode
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -139,7 +141,7 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        json                ; At least it ain't XML
-       (java +lsp)         ; the poster child for carpal tunnel syndrome
+       ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)

@@ -124,7 +124,8 @@
 (after! magit
   (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
 
-;; lsp config
+;; eglot
+;; turn off the `+lsp' flag of format when using eglot: this is a bug of eglot
 
 (after! eglot
   (set-formatter! 'clang-format
@@ -139,3 +140,20 @@
                      "--header-insertion=never"
                      "--completion-style=detailed"
                      "--query-driver=/usr/bin/gcc"))
+
+;; lsp-mode
+
+;;(setq lsp-enable-suggest-server-download nil)
+;;(setq lsp-clients-clangd-executable "/usr/bin/clangd")
+
+;;(after! lsp-clangd
+;;  (setq lsp-clients-clangd-args
+;;        '("-j=8"
+;;          "--background-index"
+;;          "--pch-storage=disk"
+;;          "--fallback-style=GNU"
+;;          "--all-scopes-completion"
+;;          "--header-insertion=never"
+;;          "--completion-style=detailed"
+;;          "--query-driver=/usr/bin/gcc"))
+;;  (set-lsp-priority! 'clangd 2))
