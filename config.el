@@ -124,6 +124,16 @@
 (after! magit
   (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
 
+;; eldoc-box
+
+(after! eldoc-box
+  (setq eldoc-box-max-pixel-width 600
+        eldoc-box-max-pixel-height 800))
+
+(map! :leader "d" #'eldoc-box-help-at-point)
+
+(add-hook! 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode)
+
 ;; eglot
 ;; turn off the `+lsp' flag of format when using eglot: this is a bug of eglot
 
