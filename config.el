@@ -124,15 +124,27 @@
 (after! magit
   (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
 
+;; corfu
+
+(after! corfu
+  (setq corfu-preselect 'directory)
+  (custom-set-faces!
+    '(corfu-current
+      :background "#4f4f4f"
+      :foreground "#ffffff"
+      :bold t)))
+
 ;; eldoc-box
+;; so many bugs in eldoc-box
 
 (after! eldoc-box
   (setq eldoc-box-max-pixel-width 600
         eldoc-box-max-pixel-height 800))
 
-(map! :leader "d" #'eldoc-box-help-at-point)
+(map! :leader "g" #'eldoc-box-quit-frame
+      :leader "d" #'eldoc-box-help-at-point)
 
-(add-hook! 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode)
+;;(add-hook! 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode)
 
 ;; eglot
 ;; turn off the `+lsp' flag of format when using eglot: this is a bug of eglot
@@ -150,6 +162,8 @@
                      "--header-insertion=never"
                      "--completion-style=detailed"
                      "--query-driver=/usr/bin/gcc"))
+
+(map! :leader "r" #'eglot-reconnect)
 
 ;; lsp-mode
 
