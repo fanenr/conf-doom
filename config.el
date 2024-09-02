@@ -135,7 +135,6 @@
       :bold t)))
 
 ;; eldoc-box
-;; so many bugs in eldoc-box
 
 (after! eldoc-box
   (setq eldoc-box-max-pixel-width 600
@@ -147,11 +146,6 @@
 ;;(add-hook! 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode)
 
 ;; eglot
-;; turn off the `+lsp' flag of format when using eglot: this is a bug of eglot
-
-(after! eglot
-  (set-formatter! 'clang-format
-    '("clang-format" "--fallback-style=GNU")))
 
 (set-eglot-client! '(c-mode c++-mode)
                    '("clangd" "-j=8"

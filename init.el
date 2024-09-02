@@ -57,7 +57,6 @@
        file-templates      ; auto-snippets for empty files
        fold                ; (nigh) universal code folding
        (format +onsave)
-       ;;(format +lsp +onsave)
        ;;god               ; run Emacs commands without modifier keys
        ;;lispy             ; vim for lisp, for people who don't like vim
        multiple-cursors    ; editing in many places at once
@@ -81,7 +80,7 @@
        vterm               ; the best terminal emulation in Emacs
 
        :checkers
-       (syntax +icons)     ; tasing you for every semicolon you forget
+       (syntax +icons +childframe)
        ;;(spell +flyspell) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
@@ -96,8 +95,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        lookup              ; navigate your code and its documentation
-       (lsp +eglot)        ; eglot
-       ;;(lsp)             ; lsp-mode
+       (lsp +eglot)        ; lsp and eglot
        magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
@@ -140,7 +138,7 @@
        ;;(haskell +lsp)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
-       json                ; At least it ain't XML
+       (json +lsp +tree-sitter)
        ;;(java +lsp)       ; the poster child for carpal tunnel syndrome
        ;;javascript        ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
