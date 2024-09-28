@@ -91,7 +91,7 @@
                                       (tab-mark   ?\t [?\u00BB?\t])))
   (global-whitespace-mode t))
 
-;; keymaps
+;; keymap
 
 (map! "C-z" nil
       "C-x C-z" nil)
@@ -112,11 +112,11 @@
 (map! "C-<next>" #'centaur-tabs-move-current-tab-to-right
       "C-<prior>" #'centaur-tabs-move-current-tab-to-left)
 
-;; hooks
+;; hook
 
 (add-hook! 'vterm-mode-hook #'centaur-tabs-local-mode)
 
-;; magit config
+;; magit
 
 (after! magit
   (setq magit-diff-refine-hunk 'all))
@@ -134,7 +134,7 @@
       :foreground "#ffffff"
       :bold t)))
 
-;; eldoc-box
+;; eldoc
 
 (after! eldoc-box
   (setq eldoc-box-max-pixel-width 600
