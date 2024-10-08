@@ -1,0 +1,17 @@
+[editor::format]
+npm install -g prettier
+
+[lang::json]
+npm install -g vscode-json-languageserver
+
+[lang::python]
+pipx install pyright
+pipx install black
+
+[lang::sh]
+npm install -g bash-language-server
+sudo dnf in shellcheck
+sudo dnf in shfmt
+
+[lang::yaml]
+npm install -g yaml-language-server
