@@ -77,19 +77,6 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-;; config
-
-(setq treemacs-width 30)
-(setq corfu-preview-current nil)
-(setq highlight-indent-guides-method 'bitmap)
-(setq eglot-ignored-server-capabilities '(:inlayHintProvider))
-
-(use-package! whitespace
-  :config
-  (setq whitespace-style '(face tabs tab-mark spaces space-mark)
-        whitespace-display-mappings '((space-mark ?\  [?\u00B7])
-                                      (tab-mark   ?\t [?\u00BB?\t])))
-  (global-whitespace-mode t))
 
 ;; keymap
 
@@ -112,7 +99,20 @@
 (map! "C-<next>" #'centaur-tabs-move-current-tab-to-right
       "C-<prior>" #'centaur-tabs-move-current-tab-to-left)
 
-;; hook
+;; ui
+
+(use-package! whitespace
+  :config
+  (setq whitespace-style '(face tabs tab-mark spaces space-mark)
+        whitespace-display-mappings '((space-mark ?\  [?\u00B7])
+                                      (tab-mark   ?\t [?\u00BB?\t])))
+  (global-whitespace-mode t))
+
+(setq highlight-indent-guides-method 'bitmap)
+
+(setq treemacs-width 30)
+
+;; vterm
 
 (add-hook! 'vterm-mode-hook #'centaur-tabs-local-mode)
 
@@ -133,6 +133,8 @@
       :background "#4f4f4f"
       :foreground "#ffffff"
       :bold t)))
+
+(setq corfu-preview-current nil)
 
 ;; eldoc
 
@@ -156,6 +158,8 @@
                      "--header-insertion=never"
                      "--completion-style=detailed"
                      "--query-driver=/usr/bin/gcc"))
+
+(setq eglot-ignored-server-capabilities '(:inlayHintProvider))
 
 (map! :leader "r" #'eglot-reconnect)
 

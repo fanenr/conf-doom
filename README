@@ -2,7 +2,7 @@
 npm install -g prettier
 
 [lang::cc]
-dnf install clang-tools-extra
+sudo dnf install clang-tools-extra
 
 [lang::json]
 npm install -g vscode-json-languageserver
