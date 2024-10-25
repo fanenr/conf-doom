@@ -96,6 +96,9 @@
       "C-<left>" #'shrink-window-horizontally
       "C-<right>" #'enlarge-window-horizontally)
 
+(map! "C-{" #'indent-rigidly-left-to-tab-stop
+      "C-}" #'indent-rigidly-right-to-tab-stop)
+
 (map! "C-<next>" #'centaur-tabs-move-current-tab-to-right
       "C-<prior>" #'centaur-tabs-move-current-tab-to-left)
 
