@@ -3,7 +3,6 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
-
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 ;; (setq user-full-name "John Doe"
@@ -25,7 +24,6 @@
 (setq doom-font (font-spec :family "Cascadia Mono NF" :size 16)
       doom-variable-pitch-font (font-spec :family "Cascadia Code NF" :size 18))
 
-;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
 ;; refresh your font settings. If Emacs still can't find your font, it likely
@@ -43,7 +41,6 @@
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/org/")
-
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -77,9 +74,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 
-
-;; keymap
-
+;; map
 (map! "C-z" nil
       "C-x C-z" nil)
 
@@ -103,7 +98,6 @@
       "C-<prior>" #'centaur-tabs-move-current-tab-to-left)
 
 ;; ui
-
 (use-package! whitespace
   :config
   (setq whitespace-style '(face tabs tab-mark spaces space-mark)
@@ -116,11 +110,9 @@
 (setq treemacs-width 30)
 
 ;; vterm
-
 (add-hook! 'vterm-mode-hook #'centaur-tabs-local-mode)
 
 ;; magit
-
 (after! magit
   (setq magit-diff-refine-hunk 'all))
 
@@ -128,19 +120,17 @@
   (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
 
 ;; corfu
-
 (after! corfu
   (setq corfu-preselect 'directory)
   (custom-set-faces!
     '(corfu-current
-      :background "#4f4f4f"
+      :bold t
       :foreground "#ffffff"
-      :bold t)))
+      :background "#4f4f4f")))
 
 (setq corfu-preview-current nil)
 
 ;; eldoc
-
 (after! eldoc-box
   (setq eldoc-box-max-pixel-width 600
         eldoc-box-max-pixel-height 800))
@@ -151,6 +141,7 @@
 ;;(add-hook! 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode)
 
 ;; eglot
+(map! :leader "r" #'eglot-reconnect)
 
 (set-eglot-client! '(c-mode c++-mode)
                    '("clangd" "-j=8"
@@ -164,10 +155,7 @@
 
 (setq eglot-ignored-server-capabilities '(:inlayHintProvider))
 
-(map! :leader "r" #'eglot-reconnect)
-
 ;; lsp-mode
-
 ;;(setq lsp-enable-suggest-server-download nil)
 ;;(setq lsp-clients-clangd-executable "/usr/bin/clangd")
 

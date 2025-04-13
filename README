@@ -1,23 +1,33 @@
+[os::tty]
+sudo dnf in wl-clipboard
+
 [editor::format]
 npm install -g prettier
 
 [lang::cc]
-sudo dnf install clang-tools-extra
+sudo dnf in clang-tools-extra
+
+[lang::sh]
+sudo dnf in shfmt
+sudo dnf in shellcheck
+npm install -g bash-language-server
+
+[lang::go]
+go install golang.org/x/tools/gopls@latest
+go install golang.org/x/tools/cmd/godoc@latest
+go install github.com/stamblerre/gocode@latest
+go install github.com/fatih/gomodifytags@latest
+go install golang.org/x/tools/cmd/gorename@latest
+go install golang.org/x/tools/cmd/goimports@latest
+go install github.com/cweill/gotests/gotests@latest
+go install github.com/x-motemen/gore/cmd/gore@latest
+
+[lang::yaml]
+npm install -g yaml-language-server
 
 [lang::json]
 npm install -g vscode-json-languageserver
 
 [lang::python]
-pipx install pyright
 pipx install black
-
-[lang::sh]
-npm install -g bash-language-server
-sudo dnf in shellcheck
-sudo dnf in shfmt
-
-[lang::yaml]
-npm install -g yaml-language-server
-
-[os::tty]
-sudo dnf in wl-clipboard
+pipx install pyright
