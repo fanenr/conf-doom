@@ -21,6 +21,7 @@ go install golang.org/x/tools/cmd/gorename@latest
 go install golang.org/x/tools/cmd/goimports@latest
 go install github.com/cweill/gotests/gotests@latest
 go install github.com/x-motemen/gore/cmd/gore@latest
+curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh | sh -s -- -b $(go env GOPATH)/bin latest
 
 [lang::yaml]
 npm install -g yaml-language-server
