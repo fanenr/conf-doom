@@ -47,5 +47,6 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
-(package! eldoc :built-in t)
 (package! eldoc-box)
+(package! eldoc :built-in t)
+(package! eglot :pin "6a9e0c76b9a7a4bf03a7fc91a02b826df507e3ce")
