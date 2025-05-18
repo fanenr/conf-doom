@@ -40,7 +40,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
+(setq org-directory "~/Org/")
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
@@ -97,6 +97,10 @@
 (map! "C-<next>" #'centaur-tabs-move-current-tab-to-right
       "C-<prior>" #'centaur-tabs-move-current-tab-to-left)
 
+;; mode
+(add-to-list 'auto-mode-alist '("\\.clangd\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.clang-format\\'" . yaml-mode))
+
 ;; ui
 (use-package! whitespace
   :config
@@ -105,9 +109,9 @@
                                       (tab-mark   ?\t [?\u00BB?\t])))
   (global-whitespace-mode t))
 
+(setq treemacs-width 32)
+(setq-default tab-width 8)
 (setq highlight-indent-guides-method 'bitmap)
-
-(setq treemacs-width 30)
 
 ;; vterm
 (add-hook! 'vterm-mode-hook #'centaur-tabs-local-mode)
@@ -153,20 +157,12 @@
                      "--completion-style=detailed"
                      "--query-driver=/usr/bin/gcc"))
 
-(setq eglot-ignored-server-capabilities '(:inlayHintProvider))
+;; cc mode
+(defun gnu-mode()
+  (setq tab-width 8)
+  (c-set-style "gnu")
+  (setq c-basic-offset 2)
+  (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
 
-;; lsp-mode
-;;(setq lsp-enable-suggest-server-download nil)
-;;(setq lsp-clients-clangd-executable "/usr/bin/clangd")
-
-;;(after! lsp-clangd
-;;  (setq lsp-clients-clangd-args
-;;        '("-j=8"
-;;          "--background-index"
-;;          "--pch-storage=disk"
-;;          "--fallback-style=GNU"
-;;          "--all-scopes-completion"
-;;          "--header-insertion=never"
-;;          "--completion-style=detailed"
-;;          "--query-driver=/usr/bin/gcc"))
-;;  (set-lsp-priority! 'clangd 2))
+(add-hook 'c-mode-hook 'gnu-mode)
+(add-hook 'c++-mode-hook 'gnu-mode)
