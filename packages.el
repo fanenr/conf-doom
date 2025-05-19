@@ -48,4 +48,5 @@
 ;; (unpin! t)
 
 (package! eldoc-box)
+(package! whitespace)
 (package! eldoc :built-in t)

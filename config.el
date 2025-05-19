@@ -84,8 +84,6 @@
 (map! "M-p" #'drag-stuff-up
       "M-n" #'drag-stuff-down)
 
-(map! "C-0" #'treemacs-select-window)
-
 (map! "C-<up>" #'enlarge-window
       "C-<down>" #'shrink-window
       "C-<left>" #'shrink-window-horizontally
@@ -101,38 +99,39 @@
 (add-to-list 'auto-mode-alist '("\\.clangd\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.clang-format\\'" . yaml-mode))
 
-;; ui
-(use-package! whitespace
-  :config
+;; editor
+(after! whitespace
+  (global-whitespace-mode t)
   (setq whitespace-style '(face tabs tab-mark spaces space-mark)
         whitespace-display-mappings '((space-mark ?\  [?\u00B7])
-                                      (tab-mark   ?\t [?\u00BB?\t])))
-  (global-whitespace-mode t))
+                                      (tab-mark   ?\t [?\u00BB?\t]))))
 
-(setq treemacs-width 32)
 (setq-default tab-width 8)
 (setq highlight-indent-guides-method 'bitmap)
 
+;; treemacs
+(after! treemacs
+  (setq treemacs-width 32))
+
+(map! "C-0" #'treemacs-select-window)
+
 ;; vterm
-(add-hook! 'vterm-mode-hook #'centaur-tabs-local-mode)
+(add-hook! vterm-mode #'centaur-tabs-local-mode)
 
 ;; magit
 (after! magit
-  (setq magit-diff-refine-hunk 'all))
-
-(after! magit
-  (setq magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
+  (setq magit-diff-refine-hunk 'all
+        magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
 
 ;; corfu
 (after! corfu
-  (setq corfu-preselect 'directory)
+  (setq corfu-preview-current nil
+        corfu-preselect 'directory)
   (custom-set-faces!
     '(corfu-current
       :bold t
       :foreground "#ffffff"
       :background "#4f4f4f")))
-
-(setq corfu-preview-current nil)
 
 ;; eldoc
 (after! eldoc-box
@@ -142,7 +141,7 @@
 (map! :leader "g" #'eldoc-box-quit-frame
       :leader "d" #'eldoc-box-help-at-point)
 
-;;(add-hook! 'eglot-managed-mode-hook #'eldoc-box-hover-at-point-mode)
+;;(add-hook! eglot-managed-mode #'eldoc-box-hover-at-point-mode)
 
 ;; eglot
 (map! :leader "r" #'eglot-reconnect)
@@ -158,11 +157,8 @@
                      "--query-driver=/usr/bin/gcc"))
 
 ;; cc mode
-(defun gnu-mode()
+(add-hook! (c-mode cc-mode)
   (setq tab-width 8)
   (c-set-style "gnu")
   (setq c-basic-offset 2)
   (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
-
-(add-hook 'c-mode-hook 'gnu-mode)
-(add-hook 'c++-mode-hook 'gnu-mode)
