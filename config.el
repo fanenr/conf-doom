@@ -78,9 +78,6 @@
 (map! "C-z" nil
       "C-x C-z" nil)
 
-(map! "C->" #'centaur-tabs-forward
-      "C-<" #'centaur-tabs-backward)
-
 (map! "M-p" #'drag-stuff-up
       "M-n" #'drag-stuff-down)
 
@@ -92,39 +89,51 @@
 (map! "C-{" #'indent-rigidly-left-to-tab-stop
       "C-}" #'indent-rigidly-right-to-tab-stop)
 
-(map! "C-<next>" #'centaur-tabs-move-current-tab-to-right
-      "C-<prior>" #'centaur-tabs-move-current-tab-to-left)
+;; editor
+(setq-default tab-width 8)
 
-;; mode
+;; auto mode
 (add-to-list 'auto-mode-alist '("\\.clangd\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.clang-format\\'" . yaml-mode))
 
-;; editor
-(after! whitespace
+;; treemacs
+(use-package! treemacs
+  :config
+  (setq treemacs-width 32)
+  :bind
+  ("C-0" . treemacs-select-window))
+
+;; whitespace
+(use-package! whitespace
+  :config
   (global-whitespace-mode t)
-  (setq whitespace-style '(face tabs tab-mark spaces space-mark)
+  (setq highlight-indent-guides-method 'bitmap
+        whitespace-style '(face tabs tab-mark spaces space-mark)
         whitespace-display-mappings '((space-mark ?\  [?\u00B7])
                                       (tab-mark   ?\t [?\u00BB?\t]))))
 
-(setq-default tab-width 8)
-(setq highlight-indent-guides-method 'bitmap)
-
-;; treemacs
-(after! treemacs
-  (setq treemacs-width 32))
-
-(map! "C-0" #'treemacs-select-window)
+;; centaur-tabs
+(use-package! centaur-tabs
+  :bind
+  ("C->" . centaur-tabs-forward)
+  ("C-<" . centaur-tabs-backward)
+  ("C-<next>" . centaur-tabs-move-current-tab-to-right)
+  ("C-<prior>" . centaur-tabs-move-current-tab-to-left))
 
 ;; vterm
-(add-hook! vterm-mode #'centaur-tabs-local-mode)
+(use-package! vterm
+  :hook
+  (vterm-mode . centaur-tabs-local-mode))
 
 ;; magit
-(after! magit
+(use-package! magit
+  :config
   (setq magit-diff-refine-hunk 'all
         magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
 
 ;; corfu
-(after! corfu
+(use-package! corfu
+  :config
   (setq corfu-preview-current nil
         corfu-preselect 'directory)
   (custom-set-faces!
@@ -133,32 +142,35 @@
       :foreground "#ffffff"
       :background "#4f4f4f")))
 
-;; eldoc
-(after! eldoc-box
+;; eldoc-box
+(use-package! eldoc-box
+  :config
   (setq eldoc-box-max-pixel-width 600
-        eldoc-box-max-pixel-height 800))
-
-(map! :leader "g" #'eldoc-box-quit-frame
-      :leader "d" #'eldoc-box-help-at-point)
-
-;;(add-hook! eglot-managed-mode #'eldoc-box-hover-at-point-mode)
+        eldoc-box-max-pixel-height 800)
+  :bind
+  (:map doom-leader-map
+        ("g" . eldoc-box-quit-frame)
+        ("d" . eldoc-box-help-at-point)))
 
 ;; eglot
-(map! :leader "r" #'eglot-reconnect)
+(use-package! eglot
+  :config
+  (set-eglot-client! '(c-mode c++-mode)
+                     '("clangd" "-j=8"
+                       "--background-index"
+                       "--pch-storage=disk"
+                       "--fallback-style=GNU"
+                       "--all-scopes-completion"
+                       "--header-insertion=never"
+                       "--completion-style=detailed"
+                       "--query-driver=/usr/bin/gcc"))
+  :bind
+  (:map doom-leader-map
+        ("r" . eglot-reconnect)))
 
-(set-eglot-client! '(c-mode c++-mode)
-                   '("clangd" "-j=8"
-                     "--background-index"
-                     "--pch-storage=disk"
-                     "--fallback-style=GNU"
-                     "--all-scopes-completion"
-                     "--header-insertion=never"
-                     "--completion-style=detailed"
-                     "--query-driver=/usr/bin/gcc"))
-
-;; cc mode
-(add-hook! (c-mode cc-mode)
-  (setq tab-width 8)
+;; c c++
+(add-hook! (c-mode c++-mode)
   (c-set-style "gnu")
-  (setq c-basic-offset 2)
-  (setq eglot-ignored-server-capabilities '(:inlayHintProvider)))
+  (setq tab-width 8
+        c-basic-offset 2
+        eglot-ignored-server-capabilities '(:inlayHintProvider)))
