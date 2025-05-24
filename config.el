@@ -155,6 +155,8 @@
 ;; eglot
 (use-package! eglot
   :config
+  (set-eglot-client! 'cmake-mode
+                     '("cmake-language-server"))
   (set-eglot-client! '(c-mode c++-mode)
                      '("clangd" "-j=8"
                        "--background-index"

@@ -6,6 +6,7 @@ npm install -g prettier
 
 [lang::cc]
 sudo dnf in clang-tools-extra
+pipx install cmake-language-server
 
 [lang::sh]
 sudo dnf in shfmt
