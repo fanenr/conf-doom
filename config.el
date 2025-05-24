@@ -106,7 +106,7 @@
 ;; whitespace
 (use-package! whitespace
   :config
-  (global-whitespace-mode t)
+  (global-whitespace-mode)
   (setq highlight-indent-guides-method 'bitmap
         whitespace-style '(face tabs tab-mark spaces space-mark)
         whitespace-display-mappings '((space-mark ?\  [?\u00B7])
@@ -158,7 +158,7 @@
   (set-eglot-client! 'cmake-mode
                      '("cmake-language-server"))
   (set-eglot-client! '(c-mode c++-mode)
-                     '("clangd" "-j=8"
+                     '("clangd" "-j=4"
                        "--background-index"
                        "--pch-storage=disk"
                        "--fallback-style=GNU"
@@ -169,6 +169,12 @@
   :bind
   (:map doom-leader-map
         ("r" . eglot-reconnect)))
+
+;; eglot-booster
+(use-package! eglot-booster
+  :config
+  (eglot-booster-mode)
+  (setq eglot-booster-io-only t))
 
 ;; c c++
 (add-hook! (c-mode c++-mode)

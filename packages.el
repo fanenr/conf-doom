@@ -47,6 +47,8 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
-(package! eldoc-box)
-(package! whitespace)
 (package! eldoc :built-in t)
+(package! eldoc-box
+  :recipe (:host github :repo "casouri/eldoc-box"))
+(package! eglot-booster
+  :recipe (:host github :repo "jdtsmith/eglot-booster"))
