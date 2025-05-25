@@ -76,18 +76,18 @@
 
 ;; map
 (map! "C-z" nil
-      "C-x C-z" nil)
+      "C-x C-z" nil
 
-(map! "M-p" #'drag-stuff-up
-      "M-n" #'drag-stuff-down)
+      "M-p" #'drag-stuff-up
+      "M-n" #'drag-stuff-down
 
-(map! "C-<up>" #'enlarge-window
+      "C-{" #'indent-rigidly-left-to-tab-stop
+      "C-}" #'indent-rigidly-right-to-tab-stop
+
+      "C-<up>" #'enlarge-window
       "C-<down>" #'shrink-window
       "C-<left>" #'shrink-window-horizontally
       "C-<right>" #'enlarge-window-horizontally)
-
-(map! "C-{" #'indent-rigidly-left-to-tab-stop
-      "C-}" #'indent-rigidly-right-to-tab-stop)
 
 ;; editor
 (setq-default tab-width 8)
@@ -145,8 +145,8 @@
 ;; eldoc-box
 (use-package! eldoc-box
   :config
-  (setq eldoc-box-max-pixel-width 600
-        eldoc-box-max-pixel-height 800)
+  (setq eldoc-box-max-pixel-width 1000
+        eldoc-box-max-pixel-height 400)
   :bind
   (:map doom-leader-map
         ("g" . eldoc-box-quit-frame)
@@ -156,19 +156,32 @@
 (use-package! eglot
   :config
   (set-eglot-client! 'cmake-mode
-                     '("cmake-language-server"))
+                     '("neocmakelsp" "--stdio"))
   (set-eglot-client! '(c-mode c++-mode)
-                     '("clangd" "-j=4"
-                       "--background-index"
+                     '("clangd"
+                       "-j" "4"
+                       "--malloc-trim"
                        "--pch-storage=disk"
+                       "--background-index"
+                       "--background-index-priority=low"
+                       ;; "--clang-tidy"
+                       ;; "--all-scopes-completion"
+                       ;; "--experimental-modules-support"
+                       "--header-insertion=iwyu"
+                       "--header-insertion-decorators"
                        "--fallback-style=GNU"
-                       "--all-scopes-completion"
-                       "--header-insertion=never"
                        "--completion-style=detailed"
-                       "--query-driver=/usr/bin/gcc"))
+                       "--function-arg-placeholders=1"))
+  (set-formatter! 'neocmakelsp
+    '("neocmakelsp" "--format" filepath) :modes '(cmake-mode))
   :bind
   (:map doom-leader-map
         ("r" . eglot-reconnect)))
+
+;; apheleia
+(use-package! apheleia
+  :bind
+  ("C-I" . +format/buffer))
 
 ;; eglot-booster
 (use-package! eglot-booster
@@ -180,5 +193,4 @@
 (add-hook! (c-mode c++-mode)
   (c-set-style "gnu")
   (setq tab-width 8
-        c-basic-offset 2
-        eglot-ignored-server-capabilities '(:inlayHintProvider)))
+        c-basic-offset 2))
