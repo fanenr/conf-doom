@@ -6,7 +6,6 @@ npm install -g prettier
 
 [lang::cc]
 sudo dnf in clang-tools-extra
-pipx install cmake-language-server
 
 [lang::sh]
 sudo dnf in shfmt
@@ -33,3 +32,7 @@ npm install -g vscode-json-languageserver
 [lang::python]
 pipx install black
 pipx install pyright
+
+[other]
+https://github.com/jdtsmith/eglot-booster
+https://github.com/neocmakelsp/neocmakelsp
