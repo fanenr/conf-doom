@@ -4,6 +4,9 @@ sudo dnf in wl-clipboard
 [editor::format]
 npm install -g prettier
 
+[tools::editorconfig]
+sudo dnf in editorconfig
+
 [lang::cc]
 sudo dnf in clang-tools-extra
 

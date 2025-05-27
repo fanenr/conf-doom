@@ -4,7 +4,7 @@
 ;; sync' after modifying this file!
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets. It is optional.
+;; clients, file templates and snippets.
 ;; (setq user-full-name "John Doe"
 ;;       user-mail-address "john@doe.com")
 
@@ -18,8 +18,7 @@
 ;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 ;;
 ;; See 'C-h v doom-font' for documentation and more examples of what they
-;; accept. For example:
-;;
+;; accept.
 
 (setq doom-font (font-spec :family "Cascadia Mono NF" :size 16)
       doom-variable-pitch-font (font-spec :family "Cascadia Code NF" :size 18))
@@ -31,7 +30,7 @@
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
-;; `load-theme' function. This is the default:
+;; `load-theme' function.
 (setq doom-theme 'doom-vibrant)
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -75,19 +74,47 @@
 ;; they are implemented.
 
 ;; map
+(defvar my-j-map (make-sparse-keymap))
+(defvar my-o-map (make-sparse-keymap))
+(global-set-key (kbd "C-j") my-j-map)
+(global-set-key (kbd "C-o") my-o-map)
+
 (map! "C-z" nil
       "C-x C-z" nil
 
+      ;; move line
       "M-p" #'drag-stuff-up
       "M-n" #'drag-stuff-down
+      (:map markdown-mode-map
+            "M-n" nil "M-p" nil)
 
-      "C-{" #'indent-rigidly-left-to-tab-stop
-      "C-}" #'indent-rigidly-right-to-tab-stop
-
+      ;; resize window
       "C-<up>" #'enlarge-window
       "C-<down>" #'shrink-window
       "C-<left>" #'shrink-window-horizontally
-      "C-<right>" #'enlarge-window-horizontally)
+      "C-<right>" #'enlarge-window-horizontally
+
+      ;; treemacs
+      "C-0" #'treemacs-select-window
+
+      ;; centaur-tabs
+      "C-." #'centaur-tabs-forward
+      "C-," #'centaur-tabs-backward
+      "C-<" #'centaur-tabs-move-current-tab-to-left
+      "C->" #'centaur-tabs-move-current-tab-to-right
+
+      ;; eglot
+      (:map my-o-map
+            "C-r" #'eglot-reconnect)
+
+      ;; jump expr/stmt
+      (:map my-j-map
+            "C-f" #'forward-sexp
+            "C-b" #'backward-sexp
+            "C-n" #'forward-list
+            "C-p" #'backward-list
+            "C-e" #'forward-sentence
+            "C-a" #'backward-sentence))
 
 ;; editor
 (setq-default tab-width 8)
@@ -96,67 +123,45 @@
 (add-to-list 'auto-mode-alist '("\\.clangd\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.clang-format\\'" . yaml-mode))
 
-;; treemacs
-(use-package! treemacs
-  :config
-  (setq treemacs-width 32)
-  :bind
-  ("C-0" . treemacs-select-window))
+;; vterm hook
+;; turn off centaur-tabs
+(add-hook! vterm-mode
+  (centaur-tabs-local-mode nil))
 
-;; whitespace
-(use-package! whitespace
-  :config
-  (global-whitespace-mode)
-  (setq highlight-indent-guides-method 'bitmap
-        whitespace-style '(face tabs tab-mark spaces space-mark)
-        whitespace-display-mappings '((space-mark ?\  [?\u00B7])
-                                      (tab-mark   ?\t [?\u00BB?\t]))))
+;; c/c++ hook
+;; switch to GNU style
+(add-hook! (c-mode c++-mode)
+  (c-set-style "gnu")
+  (setq tab-width 8
+        c-basic-offset 2))
 
-;; centaur-tabs
-(use-package! centaur-tabs
-  :bind
-  ("C-." . centaur-tabs-forward)
-  ("C-," . centaur-tabs-backward)
-  ("C-<" . centaur-tabs-move-current-tab-to-left)
-  ("C->" . centaur-tabs-move-current-tab-to-right))
-
-;; vterm
-(use-package! vterm
-  :hook
-  (vterm-mode . centaur-tabs-local-mode))
+;; before save hook
+;; trim trailing whitespaces
+(setq delete-trailing-lines t)
+(add-hook! before-save
+  (delete-trailing-whitespace))
 
 ;; magit
-(use-package! magit
-  :config
+(after! magit
   (setq magit-diff-refine-hunk 'all
         magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
 
 ;; corfu
-(use-package! corfu
-  :config
-  (setq corfu-preview-current nil
-        corfu-preselect 'directory)
+(after! corfu
   (custom-set-faces!
     '(corfu-current
       :bold t
       :foreground "#ffffff"
-      :background "#4f4f4f")))
-
-;; eldoc-box
-(use-package! eldoc-box
-  :config
-  (setq eldoc-box-max-pixel-width 800
-        eldoc-box-max-pixel-height 400)
-  :bind
-  (:map doom-leader-map
-        ("g" . eldoc-box-quit-frame)
-        ("d" . eldoc-box-help-at-point)))
+      :background "#4f4f4f"))
+  (setq corfu-preview-current nil
+        corfu-preselect 'directory))
 
 ;; eglot
-(use-package! eglot
-  :config
+(after! eglot
+  ;; cmake lsp
   (set-eglot-client! 'cmake-mode
                      '("neocmakelsp" "--stdio"))
+  ;; c/c++ lsp
   (set-eglot-client! '(c-mode c++-mode)
                      '("clangd"
                        "-j" "4"
@@ -171,21 +176,34 @@
                        "--header-insertion-decorators"
                        "--fallback-style=GNU"
                        "--completion-style=detailed"
-                       "--function-arg-placeholders=1"))
+                       "--function-arg-placeholders=1")))
+
+;; apheleia
+(after! apheleia
+  ;; cmake formatter
   (set-formatter! 'neocmakelsp
-    '("neocmakelsp" "--format" filepath) :modes '(cmake-mode))
+    '("neocmakelsp" "--format" filepath) :modes '(cmake-mode)))
+
+;; whitespace
+(after! whitespace
+  (global-whitespace-mode t)
+  (setq whitespace-style '(face tabs spaces tab-mark space-mark)
+        whitespace-display-mappings '((tab-mark 9 [187 9])
+                                      (space-mark 32 [183]))))
+
+;; eldoc-box
+(use-package! eldoc-box
+  :config
+  (setq eldoc-box-max-pixel-width 800
+        eldoc-box-max-pixel-height 400)
   :bind
-  (:map doom-leader-map
-        ("r" . eglot-reconnect)))
+  (:map my-o-map
+        ("C-g" . eldoc-box-quit-frame)
+        ("C-o" . eldoc-box-help-at-point)))
 
 ;; eglot-booster
 (use-package! eglot-booster
+  :after eglot
   :config
-  (eglot-booster-mode)
+  (eglot-booster-mode t)
   (setq eglot-booster-io-only t))
-
-;; c c++
-(add-hook! (c-mode c++-mode)
-  (c-set-style "gnu")
-  (setq tab-width 8
-        c-basic-offset 2))
