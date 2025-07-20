@@ -20,8 +20,8 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept.
 
-(setq doom-font (font-spec :family "Cascadia Mono NF" :size 16)
-      doom-variable-pitch-font (font-spec :family "Cascadia Code NF" :size 18))
+(setq doom-font (font-spec :family "Cascadia Mono NF" :size 16))
+(setq doom-variable-pitch-font (font-spec :family "Noto Sans" :size 18))
 
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -185,8 +185,8 @@
     '("neocmakelsp" "--format" filepath) :modes '(cmake-mode)))
 
 ;; whitespace
+(global-whitespace-mode t)
 (after! whitespace
-  (global-whitespace-mode t)
   (setq whitespace-style '(face tabs spaces tab-mark space-mark)
         whitespace-display-mappings '((tab-mark 9 [187 9])
                                       (space-mark 32 [183]))))
