@@ -47,10 +47,13 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;; (unpin! t)
 
-(package! eldoc :built-in t)
+;; (package! eldoc :built-in t)
 
 (package! eldoc-box
   :recipe (:host github :repo "casouri/eldoc-box"))
 
-(package! eglot-booster
-  :recipe (:host github :repo "jdtsmith/eglot-booster"))
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el"))
+
+;; (package! eglot-booster
+;;   :recipe (:host github :repo "jdtsmith/eglot-booster"))

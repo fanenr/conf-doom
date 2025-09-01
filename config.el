@@ -105,6 +105,7 @@
 
       ;; eglot
       (:map my-o-map
+            "C-f" #'+format/buffer
             "C-r" #'eglot-reconnect)
 
       ;; jump expr/stmt
@@ -159,8 +160,19 @@
 ;; eglot
 (after! eglot
   ;; cmake lsp
+  ;; (set-eglot-client! 'cmake-mode
+  ;;                    '("cmake-language-server"))
+  ;; cmake lsp
   (set-eglot-client! 'cmake-mode
                      '("neocmakelsp" "--stdio"))
+  ;; c/c++ lsp
+  ;; (set-eglot-client! '(c-mode c++-mode)
+  ;;                    '("/home/arthur/Downloads/clice/clice"
+  ;;                      "--resource-dir=/home/arthur/Downloads/clice/lib/clang/20"))
+  ;; c/c++ lsp
+  ;; (set-eglot-client! '(c-mode c++-mode)
+  ;;                    '("/home/arthur/Downloads/ccls/Release/ccls"
+  ;;                      "--init={\"index\": {\"threads\": 4}}"))
   ;; c/c++ lsp
   (set-eglot-client! '(c-mode c++-mode)
                      '("clangd"
@@ -176,7 +188,8 @@
                        "--header-insertion-decorators"
                        "--fallback-style=GNU"
                        "--completion-style=detailed"
-                       "--function-arg-placeholders=1")))
+                       "--function-arg-placeholders=1"
+                       "--query-driver=/usr/bin/gcc,/usr/bin/g++")))
 
 ;; apheleia
 (after! apheleia
@@ -201,9 +214,18 @@
         ("C-g" . eldoc-box-quit-frame)
         ("C-o" . eldoc-box-help-at-point)))
 
-;; eglot-booster
-(use-package! eglot-booster
-  :after eglot
+;; copilot
+(use-package! copilot
+  :hook (prog-mode . copilot-mode)
+  :bind (:map copilot-completion-map
+              ("<tab>" . 'copilot-accept-completion)
+              ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
-  (eglot-booster-mode t)
-  (setq eglot-booster-io-only t))
+  (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2)))
+
+;; eglot-booster
+;; (use-package! eglot-booster
+;;   :after eglot
+;;   :config
+;;   (eglot-booster-mode t)
+;;   (setq eglot-booster-io-only t))
