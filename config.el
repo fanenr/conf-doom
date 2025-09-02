@@ -74,8 +74,8 @@
 ;; they are implemented.
 
 ;; map
-(defvar my-j-map (make-sparse-keymap))
-(defvar my-o-map (make-sparse-keymap))
+(defconst my-j-map (make-sparse-keymap))
+(defconst my-o-map (make-sparse-keymap))
 (global-set-key (kbd "C-j") my-j-map)
 (global-set-key (kbd "C-o") my-o-map)
 
@@ -103,10 +103,22 @@
       "C-<" #'centaur-tabs-move-current-tab-to-left
       "C->" #'centaur-tabs-move-current-tab-to-right
 
-      ;; eglot
+      ;; copilot-mode
+      (:map copilot-completion-map
+            "<tab>" #'copilot-accept-completion
+            "C-<tab>" #'copilot-accept-completion-by-word)
+
+      ;; quick access
       (:map my-o-map
+            ;; copilot
+            "C-c" #'copilot-mode
+            ;; format
             "C-f" #'+format/buffer
-            "C-r" #'eglot-reconnect)
+            ;; eglot
+            "C-r" #'eglot-reconnect
+            ;; eldoc
+            "C-g" #'eldoc-box-quit-frame
+            "C-o" #'eldoc-box-help-at-point)
 
       ;; jump expr/stmt
       (:map my-j-map
@@ -121,8 +133,9 @@
 (setq-default tab-width 8)
 
 ;; auto mode
-(add-to-list 'auto-mode-alist '("\\.clangd\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.clang-format\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.clangd$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.clang-tidy$" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.clang-format$" . yaml-mode))
 
 ;; vterm hook
 ;; turn off centaur-tabs
@@ -131,7 +144,7 @@
 
 ;; c/c++ hook
 ;; switch to GNU style
-(add-hook! (c-mode c++-mode)
+(add-hook! cc-mode
   (c-set-style "gnu")
   (setq tab-width 8
         c-basic-offset 2))
@@ -166,15 +179,15 @@
   (set-eglot-client! 'cmake-mode
                      '("neocmakelsp" "--stdio"))
   ;; c/c++ lsp
-  ;; (set-eglot-client! '(c-mode c++-mode)
+  ;; (set-eglot-client! 'cc-mode
   ;;                    '("/home/arthur/Downloads/clice/clice"
   ;;                      "--resource-dir=/home/arthur/Downloads/clice/lib/clang/20"))
   ;; c/c++ lsp
-  ;; (set-eglot-client! '(c-mode c++-mode)
+  ;; (set-eglot-client! 'cc-mode
   ;;                    '("/home/arthur/Downloads/ccls/Release/ccls"
   ;;                      "--init={\"index\": {\"threads\": 4}}"))
   ;; c/c++ lsp
-  (set-eglot-client! '(c-mode c++-mode)
+  (set-eglot-client! 'cc-mode
                      '("clangd"
                        "-j" "4"
                        "--malloc-trim"
@@ -208,18 +221,11 @@
 (use-package! eldoc-box
   :config
   (setq eldoc-box-max-pixel-width 800
-        eldoc-box-max-pixel-height 400)
-  :bind
-  (:map my-o-map
-        ("C-g" . eldoc-box-quit-frame)
-        ("C-o" . eldoc-box-help-at-point)))
+        eldoc-box-max-pixel-height 400))
 
 ;; copilot
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("C-<tab>" . 'copilot-accept-completion-by-word))
   :config
   (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2)))
 
