@@ -137,6 +137,13 @@
 (add-to-list 'auto-mode-alist '("\\.clang-tidy$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.clang-format$" . yaml-mode))
 
+;; switch to ts-mode
+;; (add-hook! c-mode (c-ts-mode))
+;; (add-hook! c++-mode (c++-ts-mode))
+;; (add-hook! json-mode (json-ts-mode))
+;; (add-hook! yaml-mode (yaml-ts-mode))
+;; (add-hook! python-mode (python-ts-mode))
+
 ;; vterm hook
 ;; turn off centaur-tabs
 (add-hook! vterm-mode
@@ -144,21 +151,25 @@
 
 ;; c/c++ hook
 ;; switch to GNU style
-(add-hook! cc-mode
+(add-hook! (c-mode c++-mode)
   (c-set-style "gnu")
   (setq tab-width 8
         c-basic-offset 2))
 
-;; before save hook
+(add-hook! (c-ts-mode c++-ts-mode)
+  (c-ts-mode-set-style 'gnu)
+  (setq tab-width 8
+        c-ts-mode-indent-offset 2))
+
+;; before-save hook
 ;; trim trailing whitespaces
 (setq delete-trailing-lines t)
 (add-hook! before-save
   (delete-trailing-whitespace))
 
-;; magit
-(after! magit
-  (setq magit-diff-refine-hunk 'all
-        magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
+;; treesit
+(after! treesit
+  (setq treesit-font-lock-level 4))
 
 ;; corfu
 (after! corfu
@@ -170,6 +181,11 @@
   (setq corfu-preview-current nil
         corfu-preselect 'directory))
 
+;; magit
+(after! magit
+  (setq magit-diff-refine-hunk 'all
+        magit-revision-show-gravatars '("^Author:     " . "^Commit:     ")))
+
 ;; eglot
 (after! eglot
   ;; cmake lsp
@@ -179,15 +195,15 @@
   (set-eglot-client! 'cmake-mode
                      '("neocmakelsp" "--stdio"))
   ;; c/c++ lsp
-  ;; (set-eglot-client! 'cc-mode
+  ;; (set-eglot-client! '(c-mode c-ts-mode c++-mode c++-ts-mode)
   ;;                    '("/home/arthur/Downloads/clice/clice"
   ;;                      "--resource-dir=/home/arthur/Downloads/clice/lib/clang/20"))
   ;; c/c++ lsp
-  ;; (set-eglot-client! 'cc-mode
+  ;; (set-eglot-client! '(c-mode c-ts-mode c++-mode c++-ts-mode)
   ;;                    '("/home/arthur/Downloads/ccls/Release/ccls"
   ;;                      "--init={\"index\": {\"threads\": 4}}"))
   ;; c/c++ lsp
-  (set-eglot-client! 'cc-mode
+  (set-eglot-client! '(c-mode c-ts-mode c++-mode c++-ts-mode)
                      '("clangd"
                        "-j" "4"
                        "--malloc-trim"
