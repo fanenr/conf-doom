@@ -138,11 +138,11 @@
 (add-to-list 'auto-mode-alist '("\\.clang-format$" . yaml-mode))
 
 ;; switch to ts-mode
-;; (add-hook! c-mode (c-ts-mode))
-;; (add-hook! c++-mode (c++-ts-mode))
-;; (add-hook! json-mode (json-ts-mode))
-;; (add-hook! yaml-mode (yaml-ts-mode))
-;; (add-hook! python-mode (python-ts-mode))
+(add-hook! c-mode (c-ts-mode))
+(add-hook! c++-mode (c++-ts-mode))
+(add-hook! json-mode (json-ts-mode))
+(add-hook! yaml-mode (yaml-ts-mode))
+(add-hook! python-mode (python-ts-mode))
 
 ;; vterm hook
 ;; turn off centaur-tabs
@@ -168,8 +168,8 @@
   (delete-trailing-whitespace))
 
 ;; treesit
-(after! treesit
-  (setq treesit-font-lock-level 4))
+;; (after! treesit
+;;   (setq treesit-font-lock-level 4))
 
 ;; corfu
 (after! corfu
