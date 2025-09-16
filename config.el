@@ -138,11 +138,11 @@
 (add-to-list 'auto-mode-alist '("\\.clang-format$" . yaml-mode))
 
 ;; switch to ts-mode
-(add-hook! c-mode (c-ts-mode))
-(add-hook! c++-mode (c++-ts-mode))
-(add-hook! json-mode (json-ts-mode))
-(add-hook! yaml-mode (yaml-ts-mode))
-(add-hook! python-mode (python-ts-mode))
+;; (add-hook! c-mode (c-ts-mode))
+;; (add-hook! c++-mode (c++-ts-mode))
+;; (add-hook! json-mode (json-ts-mode))
+;; (add-hook! yaml-mode (yaml-ts-mode))
+;; (add-hook! python-mode (python-ts-mode))
 
 ;; vterm hook
 ;; turn off centaur-tabs
@@ -189,36 +189,41 @@
 ;; eglot
 (after! eglot
   ;; cmake lsp
-  ;; (set-eglot-client! 'cmake-mode
-  ;;                    '("cmake-language-server"))
-  ;; cmake lsp
-  (set-eglot-client! 'cmake-mode
-                     '("neocmakelsp" "--stdio"))
+  (add-to-list 'eglot-server-programs
+               '((cmake-mode cmake-ts-mode) .
+                 ;; cmake-language-server
+                 ;; ("cmake-language-server")
+
+                 ("neocmakelsp" "--stdio")))
   ;; c/c++ lsp
-  ;; (set-eglot-client! '(c-mode c-ts-mode c++-mode c++-ts-mode)
-  ;;                    '("/home/arthur/Downloads/clice/clice"
-  ;;                      "--resource-dir=/home/arthur/Downloads/clice/lib/clang/20"))
-  ;; c/c++ lsp
-  ;; (set-eglot-client! '(c-mode c-ts-mode c++-mode c++-ts-mode)
-  ;;                    '("/home/arthur/Downloads/ccls/Release/ccls"
-  ;;                      "--init={\"index\": {\"threads\": 4}}"))
-  ;; c/c++ lsp
-  (set-eglot-client! '(c-mode c-ts-mode c++-mode c++-ts-mode)
-                     '("clangd"
-                       "-j" "4"
-                       "--malloc-trim"
-                       "--pch-storage=disk"
-                       "--background-index"
-                       "--background-index-priority=low"
-                       ;; "--clang-tidy"
-                       ;; "--all-scopes-completion"
-                       ;; "--experimental-modules-support"
-                       "--header-insertion=iwyu"
-                       "--header-insertion-decorators"
-                       "--fallback-style=GNU"
-                       "--completion-style=detailed"
-                       "--function-arg-placeholders=1"
-                       "--query-driver=/usr/bin/gcc,/usr/bin/g++")))
+  (add-to-list 'eglot-server-programs
+               '((c-mode c-ts-mode c++-mode c++-ts-mode) .
+                 ;; ccls
+                 ;; ("/home/arthur/Downloads/ccls/Release/ccls")
+
+                 ;; clice
+                 ;; ("/home/arthur/Downloads/clice/clice"
+                 ;;  "--resource-dir=/home/arthur/Downloads/clice/lib/clang/20"))
+
+                 ;; clangd
+                 ("/home/arthur/Downloads/clangd/bin/clangd"
+                  "-j" "8"
+                  "--malloc-trim"
+                  "--pch-storage=disk"
+                  ;; "--background-index"
+                  ;; "--background-index-priority=low"
+
+                  ;; "--clang-tidy"
+                  ;; "--all-scopes-completion"
+                  ;; "--experimental-modules-support"
+
+                  ;; "--header-insertion=iwyu"
+                  ;; "--header-insertion-decorators"
+
+                  ;; "--fallback-style=GNU"
+                  ;; "--completion-style=detailed"
+                  ;; "--function-arg-placeholders=1"
+                  "--query-driver=/usr/bin/gcc,/usr/bin/g++"))))
 
 ;; apheleia
 (after! apheleia
@@ -243,6 +248,8 @@
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :config
+  (add-to-list 'copilot-indentation-alist '(json-ts-mode 2))
+  (add-to-list 'copilot-indentation-alist '(yaml-ts-mode 2))
   (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2)))
 
 ;; eglot-booster
