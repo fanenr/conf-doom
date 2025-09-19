@@ -139,13 +139,6 @@
 (add-to-list 'auto-mode-alist '("\\.clang-tidy$" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.clang-format$" . yaml-mode))
 
-;; switch to ts-mode
-;; (add-hook! c-mode (c-ts-mode))
-;; (add-hook! c++-mode (c++-ts-mode))
-;; (add-hook! json-mode (json-ts-mode))
-;; (add-hook! yaml-mode (yaml-ts-mode))
-;; (add-hook! python-mode (python-ts-mode))
-
 ;; vterm hook
 ;; turn off centaur-tabs
 (add-hook! vterm-mode
@@ -169,10 +162,6 @@
 (add-hook! before-save
   (delete-trailing-whitespace))
 
-;; treesit
-;; (after! treesit
-;;   (setq treesit-font-lock-level 4))
-
 ;; corfu
 (after! corfu
   (custom-set-faces!
@@ -193,38 +182,14 @@
   ;; cmake lsp
   (add-to-list 'eglot-server-programs
                '((cmake-mode cmake-ts-mode) .
-                 ;; cmake-language-server
-                 ;; ("cmake-language-server")
-
                  ("neocmakelsp" "--stdio")))
   ;; c/c++ lsp
   (add-to-list 'eglot-server-programs
                '((c-mode c-ts-mode c++-mode c++-ts-mode) .
-                 ;; ccls
-                 ;; ("/home/arthur/Downloads/ccls/Release/ccls")
-
-                 ;; clice
-                 ;; ("/home/arthur/Downloads/clice/clice"
-                 ;;  "--resource-dir=/home/arthur/Downloads/clice/lib/clang/20"))
-
-                 ;; clangd
                  ("/home/arthur/Downloads/clangd/bin/clangd"
                   "-j" "8"
                   "--malloc-trim"
                   "--pch-storage=disk"
-                  ;; "--background-index"
-                  ;; "--background-index-priority=low"
-
-                  ;; "--clang-tidy"
-                  ;; "--all-scopes-completion"
-                  ;; "--experimental-modules-support"
-
-                  ;; "--header-insertion=iwyu"
-                  ;; "--header-insertion-decorators"
-
-                  ;; "--fallback-style=GNU"
-                  ;; "--completion-style=detailed"
-                  ;; "--function-arg-placeholders=1"
                   "--query-driver=/usr/bin/gcc,/usr/bin/g++"))))
 
 ;; apheleia
@@ -253,10 +218,3 @@
   (add-to-list 'copilot-indentation-alist '(json-ts-mode 2))
   (add-to-list 'copilot-indentation-alist '(yaml-ts-mode 2))
   (add-to-list 'copilot-indentation-alist '(emacs-lisp-mode 2)))
-
-;; eglot-booster
-;; (use-package! eglot-booster
-;;   :after eglot
-;;   :config
-;;   (eglot-booster-mode t)
-;;   (setq eglot-booster-io-only t))

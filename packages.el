@@ -60,6 +60,3 @@
 
 (package! copilot
   :recipe (:host github :repo "copilot-emacs/copilot.el"))
-
-;; (package! eglot-booster
-;;   :recipe (:host github :repo "jdtsmith/eglot-booster"))
