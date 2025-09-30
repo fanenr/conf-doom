@@ -201,9 +201,7 @@
 ;; whitespace
 (global-whitespace-mode t)
 (after! whitespace
-  (setq whitespace-style '(face tabs spaces tab-mark space-mark)
-        whitespace-display-mappings '((tab-mark 9 [187 9])
-                                      (space-mark 32 [183]))))
+  (setq whitespace-style '(face tabs spaces tab-mark space-mark)))
 
 ;; eldoc-box
 (use-package! eldoc-box
@@ -213,7 +211,6 @@
 
 ;; copilot
 (use-package! copilot
-  :hook (prog-mode . copilot-mode)
   :config
   (add-to-list 'copilot-indentation-alist '(json-ts-mode 2))
   (add-to-list 'copilot-indentation-alist '(yaml-ts-mode 2))
